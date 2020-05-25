@@ -1,6 +1,7 @@
 package pl.mw.testing;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -26,8 +27,8 @@ class MealTest {
 
         // then
         assertEquals(30, discountedPrice);
+        System.out.println("ddddddd");
     }
-
 
     @Test
     void referenceShouldBeTheSame() {
@@ -38,7 +39,6 @@ class MealTest {
         // then
         assertSame(meal, meal1);
     }
-
 
     @Test
     void referenceShouldBeNotTheSame() {
@@ -87,6 +87,16 @@ class MealTest {
     @MethodSource("createCakeNames")
     void cakeNamesShouldEndWithCake(String name) {
         assertThat(name, endsWith("cake"));
+    }
+
+    @ExtendWith(IAExceptionIgnoreExtension.class)
+    @ParameterizedTest
+    @ValueSource(ints = {1, 3, 5, 10})
+    void mealPricesShouldBeLowerThan10(int price) {  // just for showing
+        if (price > 5) {
+            throw new IllegalArgumentException();
+        }
+        assertThat(price, lessThan(20));
     }
 
     private static Stream<Arguments> createMealWithNameAndPrice() {
