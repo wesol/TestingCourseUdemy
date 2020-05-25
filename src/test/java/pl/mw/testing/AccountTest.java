@@ -48,7 +48,6 @@ class AccountTest {
 
         // then
         assertNull(address);
-        assertThat(address, is(null));  //alternative version of previous hamcrest
     }
 
 
