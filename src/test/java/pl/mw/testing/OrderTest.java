@@ -1,5 +1,7 @@
 package pl.mw.testing;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -7,6 +9,18 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class OrderTest {
+
+    private Order order;
+
+    @BeforeEach()
+    void initializeOrder() {
+        order = new Order();
+    }
+
+    @AfterEach
+    void cleanUp(){
+        order.cancel();
+    }
 
     // test to testing method
     @Test
@@ -21,9 +35,6 @@ class OrderTest {
 
     @Test
     void mealListShouldBeEmptyAfterOrderObjectCreation() {
-        // given
-        Order order = new Order();
-
         // then
         assertThat(order.getMeals(), empty());
     }
@@ -33,7 +44,6 @@ class OrderTest {
         // given
         Meal meal = new Meal(12, "Kebab");
         Meal meal2 = new Meal(17, "Burger");
-        Order order = new Order();
 
         // when
         order.addMealToOrder(meal);
@@ -50,7 +60,6 @@ class OrderTest {
         // given
         Meal meal = new Meal(12, "Kebab");
         Meal meal2 = new Meal(17, "Burger");
-        Order order = new Order();
 
         // when
         order.addMealToOrder(meal);
@@ -69,7 +78,6 @@ class OrderTest {
         // given
         Meal meal = new Meal(12, "Kebab");
         Meal meal2 = new Meal(17, "Burger");
-        Order order = new Order();
 
         // when
         order.addMealToOrder(meal);
