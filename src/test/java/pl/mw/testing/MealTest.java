@@ -1,13 +1,18 @@
 package pl.mw.testing;
 
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -99,6 +104,34 @@ class MealTest {
         assertThat(price, lessThan(20));
     }
 
+    @TestFactory
+    Collection<DynamicTest> calculateMealPrices() {
+
+        Order order = new Order();
+        order.addMealToOrder(new Meal(10, "pizza", 2));
+        order.addMealToOrder(new Meal(7, "fries", 4));
+        order.addMealToOrder(new Meal(10, "cheeseburger", 1));
+
+        Collection<DynamicTest> dynamicTests = new ArrayList<>();
+
+        List<Meal> meals = order.getMeals();
+        for (int i = 0; i < meals.size(); i++) {
+            Meal meal = meals.get(i);
+            int price = meal.getPrice();
+            int quantity = meal.getQuantity();
+
+            Executable executable = () -> {
+                assertThat(calculatePrice(price, quantity), lessThan(67));
+            };
+            String name = "Test name: " + i;
+
+            DynamicTest test = DynamicTest.dynamicTest(name, executable);
+            dynamicTests.add(test);
+        }
+
+        return dynamicTests;
+    }
+
     private static Stream<Arguments> createMealWithNameAndPrice() {
         return Stream.of(
                 Arguments.of("Hamburger", 10),
@@ -109,5 +142,9 @@ class MealTest {
     private static Stream<String> createCakeNames() {
         List<String> cakeNames = Arrays.asList("Cheesecake", "Fruitcake", "Cupcake");
         return cakeNames.stream();
+    }
+
+    private int calculatePrice(int price, int quantity) {
+        return price * quantity;
     }
 }
