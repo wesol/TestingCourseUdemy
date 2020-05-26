@@ -1,4 +1,4 @@
-package pl.mw.testing;
+package pl.mw.testing.cart;
 
 import org.junit.jupiter.api.Test;
 import pl.mw.testing.order.Order;
