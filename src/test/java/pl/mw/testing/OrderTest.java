@@ -38,6 +38,9 @@ class OrderTest {
 
     @Test
     void mealListShouldBeEmptyAfterOrderObjectCreation() {
+        // given
+        // Order is created in BeforeEach
+
         // then
         assertThat(order.getMeals(), empty());
     }
@@ -102,6 +105,14 @@ class OrderTest {
 
         // then
         assertThrows(IllegalStateException.class, () -> order.totalPrice());
+    }
 
+    @Test
+    void emptyOrderTotalPriceShouldEqualsZero() {
+        // given
+        // Order is created in BeforeEach
+
+        // then
+        assertThat(order.totalPrice(), is(0));
     }
 }
