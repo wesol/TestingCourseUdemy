@@ -115,4 +115,30 @@ class OrderTest {
         // then
         assertThat(order.totalPrice(), is(0));
     }
+
+
+    @Test
+    void cancelingOrderShouldRemoveAlItemsFromMealsList() {
+        // given
+        for (int i = 0; i < 3; i++) {
+            order.addMealToOrder(new Meal(i, "Meal " + i));
+        }
+
+        // when
+        order.cancel();
+
+        // then
+        assertThat(order.getMeals().size(), is(0));
+    }
+
+    @Test
+    void afterAdding3MealsToOrderOrderShouldHas3Meals() {
+        // given
+        for (int i = 0; i < 3; i++) {
+            order.addMealToOrder(new Meal(i, "Meal " + i));
+        }
+
+        // then
+        assertThat(order.getMeals().size(), is(3));
+    }
 }
