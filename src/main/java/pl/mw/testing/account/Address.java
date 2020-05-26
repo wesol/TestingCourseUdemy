@@ -1,4 +1,4 @@
-package pl.mw.testing;
+package pl.mw.testing.account;
 
 public class Address {
 

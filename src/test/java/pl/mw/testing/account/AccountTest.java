@@ -1,4 +1,4 @@
-package pl.mw.testing;
+package pl.mw.testing.account;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;

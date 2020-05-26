@@ -1,6 +1,7 @@
 package pl.mw.testing;
 
 import org.junit.jupiter.api.Test;
+import pl.mw.testing.order.Order;
 
 import java.time.Duration;
 

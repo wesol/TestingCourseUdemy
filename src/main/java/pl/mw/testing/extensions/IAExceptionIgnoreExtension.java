@@ -1,4 +1,4 @@
-package pl.mw.testing;
+package pl.mw.testing.extensions;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;

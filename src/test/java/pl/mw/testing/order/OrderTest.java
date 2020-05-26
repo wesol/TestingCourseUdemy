@@ -1,9 +1,11 @@
-package pl.mw.testing;
+package pl.mw.testing.order;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import pl.mw.testing.Meal;
+import pl.mw.testing.extensions.BeforeAfterExtension;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;

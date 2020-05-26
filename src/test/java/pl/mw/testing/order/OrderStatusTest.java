@@ -1,4 +1,4 @@
-package pl.mw.testing;
+package pl.mw.testing.order;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;

@@ -1,5 +1,7 @@
 package pl.mw.testing;
 
+import pl.mw.testing.order.Order;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,4 +1,6 @@
-package pl.mw.testing;
+package pl.mw.testing.order;
+
+import pl.mw.testing.Meal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +9,7 @@ public class Order {
 
     private final List<Meal> meals = new ArrayList<>();
 
-    void addMealToOrder(Meal meal) {
+    public void addMealToOrder(Meal meal) {
         this.meals.add(meal);
     }
 
@@ -15,7 +17,7 @@ public class Order {
         this.meals.remove(meal);
     }
 
-    List<Meal> getMeals() {
+    public List<Meal> getMeals() {
         return meals;
     }
 
