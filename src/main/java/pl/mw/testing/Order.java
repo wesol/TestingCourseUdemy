@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Order {
 
-    private List<Meal> meals = new ArrayList<>();
+    private final List<Meal> meals = new ArrayList<>();
 
     void addMealToOrder(Meal meal) {
         this.meals.add(meal);
@@ -21,6 +21,18 @@ public class Order {
 
     void cancel() {
         this.meals.clear();
+    }
+
+    int totalPrice() {
+
+        int sum = this.meals.stream()
+                            .mapToInt(Meal::getPrice)
+                            .sum();
+        if (sum < 0) {
+            throw new IllegalStateException("Limit price exceed!");
+        }
+
+        return sum;
     }
 
     @Override

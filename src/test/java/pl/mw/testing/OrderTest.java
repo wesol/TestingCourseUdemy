@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(BeforeAfterExtension.class)
 class OrderTest {
@@ -20,7 +21,7 @@ class OrderTest {
     }
 
     @AfterEach
-    void cleanUp(){
+    void cleanUp() {
         order.cancel();
     }
 
@@ -89,4 +90,18 @@ class OrderTest {
         assertThat(order.getMeals(), contains(meal, meal2)); //inAnyOrder if it nothing matter
     }
 
+    @Test
+    void orderTotalPriceShouldNotExceedsMaxIntValue() {
+        // given
+        Meal meal = new Meal(Integer.MAX_VALUE, "Kebab");
+        Meal meal2 = new Meal(Integer.MAX_VALUE, "Burger");
+
+        // when
+        order.addMealToOrder(meal);
+        order.addMealToOrder(meal2);
+
+        // then
+        assertThrows(IllegalStateException.class, () -> order.totalPrice());
+
+    }
 }
