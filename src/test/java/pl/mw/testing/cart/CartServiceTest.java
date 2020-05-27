@@ -10,9 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
 
 class CartServiceTest {
 
@@ -150,5 +148,74 @@ class CartServiceTest {
 
         assertThat(cart.getOrders(), hasSize(1));
         assertThat(cart.getOrders().get(0).getOrderStatus(), equalTo(OrderStatus.PREPARING));
+    }
+
+    @Test
+    void shouldDoNothingWhenProcessCart() {
+        // given
+        Order order = new Order();
+        Cart cart = new Cart();
+        cart.addOrderToCard(order);
+
+        CartHandler cartHandler = mock(CartHandler.class);
+        CartService cartService = new CartService(cartHandler);
+
+        given(cartHandler.canHandleCard(cart)).willReturn(true);
+
+        doNothing().when(cartHandler).sendToPrepare(cart);
+        willDoNothing().given(cartHandler).sendToPrepare(cart); //alternative to previous BDD friendly
+        willDoNothing().willThrow(IllegalStateException.class).given(cartHandler).sendToPrepare(cart); //if calling second time throw exc.
+
+        // when
+        cartService.processCart(cart);
+
+        // then
+        then(cartHandler).should().sendToPrepare(cart);
+
+        assertThat(cart.getOrders(), hasSize(1));
+        assertThat(cart.getOrders().get(0).getOrderStatus(), equalTo(OrderStatus.PREPARING));
+    }
+
+    @Test
+    void ShouldDoNothingWhenProcessCart() {
+        // given
+        Order order = new Order();
+        Cart cart = new Cart();
+        cart.addOrderToCard(order);
+
+        CartHandler cartHandler = mock(CartHandler.class);
+        CartService cartService = new CartService(cartHandler);
+
+        /* Four alternative beneath*/
+        doAnswer(invocationOnMock -> {
+            Cart argumentCart = invocationOnMock.getArgument(0);
+            argumentCart.clearCard();
+            return true;
+        }).when(cartHandler).canHandleCard(cart);
+
+        when(cartHandler.canHandleCard(cart)).then(invocation -> {
+            Cart argumentCart = invocation.getArgument(0);
+            argumentCart.clearCard();
+            return true;
+        });
+
+        willAnswer(invocation -> {
+            Cart argumentCart = invocation.getArgument(0);
+            argumentCart.clearCard();
+            return true;
+        }).given(cartHandler).canHandleCard(cart);
+
+        given(cartHandler.canHandleCard(cart)).will(invocation -> {
+            Cart argumentCart = invocation.getArgument(0);
+            argumentCart.clearCard();
+            return true;
+        });
+
+        // when
+        cartService.processCart(cart);
+
+        // then
+        then(cartHandler).should().sendToPrepare(cart);
+        assertThat(cart.getOrders(), hasSize(0));
     }
 }
