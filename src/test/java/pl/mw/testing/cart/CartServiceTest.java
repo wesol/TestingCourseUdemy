@@ -1,8 +1,9 @@
 package pl.mw.testing.cart;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pl.mw.testing.order.Order;
 import pl.mw.testing.order.OrderStatus;
 
@@ -13,7 +14,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class CartServiceTest {
+
+    @InjectMocks
+    private CartService cartService;
+    @Mock
+    private CartHandler cartHandler;
+    @Captor
+    private ArgumentCaptor<Cart> argumentCaptor;
+
 
     @Test
     void processCartShouldSendToPrepare() {
@@ -21,9 +31,6 @@ class CartServiceTest {
         Order order = new Order();
         Cart cart = new Cart();
         cart.addOrderToCard(order);
-
-        CartHandler cartHandler = mock(CartHandler.class);
-        CartService cartService = new CartService(cartHandler);
 
         given(cartHandler.canHandleCard(cart)).willReturn(true);
 
@@ -52,9 +59,6 @@ class CartServiceTest {
         Cart cart = new Cart();
         cart.addOrderToCard(order);
 
-        CartHandler cartHandler = mock(CartHandler.class);
-        CartService cartService = new CartService(cartHandler);
-
         given(cartHandler.canHandleCard(cart)).willReturn(false);
 
         // when
@@ -75,9 +79,6 @@ class CartServiceTest {
         Cart cart = new Cart();
         cart.addOrderToCard(order);
 
-        CartHandler cartHandler = mock(CartHandler.class);
-        CartService cartService = new CartService(cartHandler);
-
         given(cartHandler.canHandleCard(cart)).willReturn(false, true, false);
 
         // then
@@ -93,9 +94,6 @@ class CartServiceTest {
         Cart cart = new Cart();
         cart.addOrderToCard(order);
 
-        CartHandler cartHandler = mock(CartHandler.class);
-        CartService cartService = new CartService(cartHandler);
-
         given(cartHandler.canHandleCard(argThat(c -> c.getOrders().size() > 0))).willReturn(true); // true zostaje zwrócone tylko jeśli warunek z lambdy jest spełniony
 
         // when
@@ -107,16 +105,12 @@ class CartServiceTest {
         assertThat(cart.getOrders().get(0).getOrderStatus(), equalTo(OrderStatus.PREPARING));
     }
 
-
     @Test
     void canHandleCartShouldThrowException() {
         // given
         Order order = new Order();
         Cart cart = new Cart();
         cart.addOrderToCard(order);
-
-        CartHandler cartHandler = mock(CartHandler.class);
-        CartService cartService = new CartService(cartHandler);
 
         given(cartHandler.canHandleCard(cart)).willThrow(IllegalStateException.class);
 
@@ -125,18 +119,12 @@ class CartServiceTest {
         assertThrows(IllegalStateException.class, () -> cartService.processCart(cart));
     }
 
-
     @Test
     void processCartShouldSendToPrepareWithArgumentCaptor() {
         // given
         Order order = new Order();
         Cart cart = new Cart();
         cart.addOrderToCard(order);
-
-        CartHandler cartHandler = mock(CartHandler.class);
-        CartService cartService = new CartService(cartHandler);
-
-        ArgumentCaptor<Cart> argumentCaptor = ArgumentCaptor.forClass(Cart.class);
 
         given(cartHandler.canHandleCard(cart)).willReturn(true);
 
@@ -157,9 +145,6 @@ class CartServiceTest {
         Order order = new Order();
         Cart cart = new Cart();
         cart.addOrderToCard(order);
-
-        CartHandler cartHandler = mock(CartHandler.class);
-        CartService cartService = new CartService(cartHandler);
 
         given(cartHandler.canHandleCard(cart)).willReturn(true);
 
@@ -183,9 +168,6 @@ class CartServiceTest {
         Order order = new Order();
         Cart cart = new Cart();
         cart.addOrderToCard(order);
-
-        CartHandler cartHandler = mock(CartHandler.class);
-        CartService cartService = new CartService(cartHandler);
 
         /* Four alternative beneath*/
         doAnswer(invocationOnMock -> {
