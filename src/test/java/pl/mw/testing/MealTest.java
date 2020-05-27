@@ -24,6 +24,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
 class MealTest {
 
@@ -162,6 +163,21 @@ class MealTest {
 
         // when
         int result = mealMock.sumPrice();
+
+        // then
+        assertThat(result, equalTo(45));
+    }
+
+    @Test
+    void testMealSumPriceWithSpy() {
+        // given
+        Meal mealSpy = spy(new Meal(10, "cheeseburger", 1));
+
+        given(mealSpy.getPrice()).willReturn(15);
+        given(mealSpy.getQuantity()).willReturn(3);
+
+        // when
+        int result = mealSpy.sumPrice();
 
         // then
         assertThat(result, equalTo(45));
