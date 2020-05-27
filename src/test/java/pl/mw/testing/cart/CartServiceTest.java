@@ -163,9 +163,9 @@ class CartServiceTest {
 
         given(cartHandler.canHandleCard(cart)).willReturn(true);
 
-        doNothing().when(cartHandler).sendToPrepare(cart);
+        // doNothing().when(cartHandler).sendToPrepare(cart);
         willDoNothing().given(cartHandler).sendToPrepare(cart); //alternative to previous BDD friendly
-        willDoNothing().willThrow(IllegalStateException.class).given(cartHandler).sendToPrepare(cart); //if calling second time throw exc.
+        // willDoNothing().willThrow(IllegalStateException.class).given(cartHandler).sendToPrepare(cart); //if calling second time throw exc.
 
         // when
         cartService.processCart(cart);
@@ -178,7 +178,7 @@ class CartServiceTest {
     }
 
     @Test
-    void ShouldDoNothingWhenProcessCart() {
+    void shouldAnswerWhenProcessCart() {
         // given
         Order order = new Order();
         Cart cart = new Cart();
@@ -190,27 +190,27 @@ class CartServiceTest {
         /* Four alternative beneath*/
         doAnswer(invocationOnMock -> {
             Cart argumentCart = invocationOnMock.getArgument(0);
-            argumentCart.clearCard();
+            argumentCart.clearCart();
             return true;
         }).when(cartHandler).canHandleCard(cart);
 
-        when(cartHandler.canHandleCard(cart)).then(invocation -> {
-            Cart argumentCart = invocation.getArgument(0);
-            argumentCart.clearCard();
-            return true;
-        });
-
-        willAnswer(invocation -> {
-            Cart argumentCart = invocation.getArgument(0);
-            argumentCart.clearCard();
-            return true;
-        }).given(cartHandler).canHandleCard(cart);
-
-        given(cartHandler.canHandleCard(cart)).will(invocation -> {
-            Cart argumentCart = invocation.getArgument(0);
-            argumentCart.clearCard();
-            return true;
-        });
+        // when(cartHandler.canHandleCard(cart)).then(invocation ->  {
+        //     Cart argumentCart = invocation.getArgument(0);
+        //     argumentCart.clearCart();
+        //     return true;
+        // });
+        //
+        // willAnswer(invocation -> {
+        //     Cart argumentCart = invocation.getArgument(0);
+        //     argumentCart.clearCart();
+        //     return true;
+        // }).given(cartHandler).canHandleCard(cart);
+        //
+        // given(cartHandler.canHandleCard(cart)).will(invocation -> {
+        //     Cart argumentCart = invocation.getArgument(0);
+        //     argumentCart.clearCart();
+        //     return true;
+        // });
 
         // when
         cartService.processCart(cart);
@@ -221,14 +221,13 @@ class CartServiceTest {
     }
 
     @Test
-    void deliveryShouldBeFreeWhenIsMoreThan2Orders() {
+    void deliveryShouldBeFreeIfIsMoreThan2Orders() {
         // given
         Cart cart = new Cart();
         cart.addOrderToCard(new Order());
         cart.addOrderToCard(new Order());
         cart.addOrderToCard(new Order());
 
-        CartHandler cartHandler = mock(CartHandler.class);
         given(cartHandler.isDeliveryFree(cart)).willCallRealMethod(); // call to the real method - not recommended
 
         // when

@@ -18,7 +18,7 @@ public class Cart {
         this.orders.add(order);
     }
 
-    void clearCard() {
+    void clearCart() {
         this.orders.clear();
     }
 
@@ -30,6 +30,6 @@ public class Cart {
             addOrderToCard(order);
         }
         System.out.println("Cart size: " + orders.size());
-        clearCard();
+        clearCart();
     }
 }
