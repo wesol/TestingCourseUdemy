@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import pl.mw.testing.order.Order;
 import pl.mw.testing.order.OrderStatus;
 
@@ -14,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.*;
 
+@MockitoSettings(strictness = Strictness.WARN)
 @ExtendWith(MockitoExtension.class)
 class CartServiceTest {
 
@@ -176,23 +179,23 @@ class CartServiceTest {
             return true;
         }).when(cartHandler).canHandleCard(cart);
 
-        // when(cartHandler.canHandleCard(cart)).then(invocation ->  {
-        //     Cart argumentCart = invocation.getArgument(0);
-        //     argumentCart.clearCart();
-        //     return true;
-        // });
-        //
-        // willAnswer(invocation -> {
-        //     Cart argumentCart = invocation.getArgument(0);
-        //     argumentCart.clearCart();
-        //     return true;
-        // }).given(cartHandler).canHandleCard(cart);
-        //
-        // given(cartHandler.canHandleCard(cart)).will(invocation -> {
-        //     Cart argumentCart = invocation.getArgument(0);
-        //     argumentCart.clearCart();
-        //     return true;
-        // });
+        when(cartHandler.canHandleCard(cart)).then(invocation -> {
+            Cart argumentCart = invocation.getArgument(0);
+            argumentCart.clearCart();
+            return true;
+        });
+
+        willAnswer(invocation -> {
+            Cart argumentCart = invocation.getArgument(0);
+            argumentCart.clearCart();
+            return true;
+        }).given(cartHandler).canHandleCard(cart);
+
+        given(cartHandler.canHandleCard(cart)).will(invocation -> {
+            Cart argumentCart = invocation.getArgument(0);
+            argumentCart.clearCart();
+            return true;
+        });
 
         // when
         cartService.processCart(cart);
