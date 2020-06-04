@@ -2,6 +2,7 @@ package pl.mw.testing.meal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class MealRepository {
@@ -20,9 +21,17 @@ public class MealRepository {
         return meals;
     }
 
-    public List<Meal> findByName(String mealName) {
+    public List<Meal> findByName(String mealName, boolean exactMatch) {
+
+        Predicate<Meal> mealPredicate;
+        if (exactMatch) {
+            mealPredicate = meal -> meal.getName().equals(mealName);
+        } else {
+            mealPredicate = meal -> meal.getName().startsWith(mealName);
+        }
+        
         return meals.stream()
-                    .filter(meal -> meal.getName().equals(mealName))
+                    .filter(mealPredicate)
                     .collect(Collectors.toList());
     }
 
