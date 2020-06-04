@@ -1,7 +1,7 @@
 package pl.mw.testing.order;
 
 import org.junit.jupiter.api.*;
-import pl.mw.testing.Meal;
+import pl.mw.testing.meal.Meal;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

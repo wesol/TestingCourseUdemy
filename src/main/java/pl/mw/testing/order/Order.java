@@ -1,6 +1,6 @@
 package pl.mw.testing.order;
 
-import pl.mw.testing.Meal;
+import pl.mw.testing.meal.Meal;
 
 import java.util.ArrayList;
 import java.util.List;

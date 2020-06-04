@@ -1,4 +1,4 @@
-package pl.mw.testing;
+package pl.mw.testing.meal;
 
 import java.util.Objects;
 

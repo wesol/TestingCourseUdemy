@@ -1,4 +1,4 @@
-package pl.mw.testing;
+package pl.mw.testing.meal;
 
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Tag;
